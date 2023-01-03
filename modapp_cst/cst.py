@@ -1,11 +1,11 @@
 from __future__ import annotations
-
+from abc import ABC
 from typing import Sequence
 
 from .visitor import Visitor
 
 
-class CstNode:
+class CstNode(ABC):
     def visit(self, visitor: Visitor) -> CstNode:
         # visit self
         should_visit_children = visitor.on_visit(self)
@@ -14,7 +14,10 @@ class CstNode:
             for child in self.children:
                 child.visit(visitor)
 
-        leave_result = visitor.on_leave(self)
+        if isinstance(visitor, Visitor):
+            leave_result = visitor.on_leave(self)
+        else:
+            leave_result = visitor.on_leave(self, self)
         # TODO: validate return type
         return leave_result
 
