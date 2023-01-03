@@ -2,11 +2,11 @@ from __future__ import annotations
 from abc import ABC
 from typing import Sequence
 
-from .visitor import Visitor
+from .visitor import Visitor, CSTVisitorT
 
 
 class CstNode(ABC):
-    def visit(self, visitor: Visitor) -> CstNode:
+    def visit(self, visitor: CSTVisitorT) -> CstNode:
         # visit self
         should_visit_children = visitor.on_visit(self)
 
